@@ -1,6 +1,5 @@
 import { GetStaticProps } from 'next';
 import Head from "next/head";
-
 import { SubscribeButton } from "../components/SubscribeButton";
 import { stripe } from '../services/stripe';
 
@@ -43,7 +42,6 @@ export const getStaticProps: GetStaticProps = async () => {
     expand: ['product']
   })
 
-
   const product = {
     priceId: price.id,
     amount: new Intl.NumberFormat('en-US', {
@@ -51,6 +49,8 @@ export const getStaticProps: GetStaticProps = async () => {
       currency: 'USD',
 
     }).format(price.unit_amount / 100),
+    
+    
    
   }
   
