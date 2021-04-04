@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from 'next-auth/client';
 import {query as q } from 'faunadb';
-import { stripe } from "../../services/stripe";
+import { stripe } from '../../services/stripe';
 import { fauna } from '../../services/fauna'
 
 type User = {
@@ -15,7 +15,9 @@ type User = {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const session = await getSession({req});
+    const session = await getSession({ req })
+
+    
 
     const user = await fauna.query<User>(
       q.Get(
@@ -50,7 +52,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
 
-    
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
@@ -61,12 +62,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       mode: 'subscription',
       allow_promotion_codes: true,
       success_url: process.env.STRIPE_SUCCESS_URL,
-      cancel_url: process.env.STRIPE_CANCEL_URL,
-     
+      cancel_url: process.env.STRIPE_CANCEL_URL
     })
 
 
-    return res.status(200).json({sessionId: stripeCheckoutSession.id})
+    return res.status(200).json({ sessionId: stripeCheckoutSession.id })
   }else {
     res.setHeader('Allow', 'POST')
     res.status(405).end('Method not allowed')
