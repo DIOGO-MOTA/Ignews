@@ -8,9 +8,7 @@ import styles from './styles.module.scss';
 interface SubscribeButtonProps {
   priceId: string;
 }
-interface teste {
-  sessionId: string;
-}
+
 export function SubscribeButton({ priceId }: SubscribeButtonProps) {
   const [session] = useSession();
 
@@ -21,7 +19,7 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
     }
 
     try {
-      const response = await api.post<teste>('/subscribe')
+      const response = await api.post('/subscribe')
       
       const { sessionId } = response.data;
 
